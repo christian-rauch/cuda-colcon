@@ -44,10 +44,16 @@ ExternalProject_Add(cuda_installer
     DOWNLOAD_NO_EXTRACT True
     # DOWNLOAD_EXTRACT_TIMESTAMP False
     CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       ""
-    INSTALL_COMMAND     sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_INSTALL_PREFIX}
+    # BUILD_COMMAND       ""
+    BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_BINARY_DIR}/cuda_toolkit/
+    # INSTALL_COMMAND     sh <DOWNLOADED_FILE> --no-man-page --toolkit --toolkitpath=${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND     ""
     # UPDATE_COMMAND ""
 )
 
 # noop install instruction to silence warning
-install(CODE "")
+# install(CODE "")
+
+install(DIRECTORY ${CMAKE_BINARY_DIR}/cuda_toolkit/
+    DESTINATION ${CMAKE_INSTALL_PREFIX}
+)
