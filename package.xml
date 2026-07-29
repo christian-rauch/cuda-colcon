@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>cuda</name>
+  <version>13.3.1</version>
+  <description>NVIDIA CUDA</description>
+
+  <maintainer email="Christian.Rauch@unileoben.ac.at">Christian Rauch</maintainer>
+
+  <license>CUDA EULA</license>
+
+  <url type="website">https://docs.nvidia.com/cuda</url>
+
+  <buildtool_depend>cmake</buildtool_depend>
+
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+</package>
