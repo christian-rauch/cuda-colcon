@@ -18,6 +18,10 @@ set(CUDA_MD5_URL
 )
 
 
+set(NVSHMEM_URL
+    "https://developer.download.nvidia.com/compute/nvshmem/redist/libnvshmem/linux-x86_64/libnvshmem-linux-x86_64-3.7.2_cuda13-archive.tar.xz"
+)
+
 include(ExternalProject)
 
 # get MD5 checksum for the installer
@@ -100,3 +104,27 @@ foreach(subfolder IN LISTS CUDA_TOOLKIT_SUBFOLDERS)
         DESTINATION "${CMAKE_INSTALL_PREFIX}"
     )
 endforeach()
+
+ExternalProject_Add(nvshmem_installer
+    URL                 ${NVSHMEM_URL}
+    URL_MD5             ""
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}
+    # DOWNLOAD_NO_EXTRACT True
+    # DOWNLOAD_EXTRACT_TIMESTAMP False
+    CONFIGURE_COMMAND   ""
+    BUILD_COMMAND       ""
+    # BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_BINARY_DIR}/cuda_toolkit/
+    # BUILD_COMMAND       sh -c "DISPLAY= sh <DOWNLOADED_FILE> --extract=${CMAKE_BINARY_DIR}/cuda_toolkit/"
+    # BUILD_COMMAND       ${CMAKE_COMMAND} -E env --unset=DISPLAY sh <DOWNLOADED_FILE> --extract=${CMAKE_BINARY_DIR}/cuda_toolkit/
+    INSTALL_COMMAND     ""
+    # UPDATE_COMMAND ""
+)
+
+ExternalProject_Get_Property(nvshmem_installer SOURCE_DIR)
+
+set(NVSHMEM_PATH ${SOURCE_DIR})
+
+install(
+    DIRECTORY   "${NVSHMEM_PATH}/"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}"
+)
