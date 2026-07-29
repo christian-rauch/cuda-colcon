@@ -77,10 +77,10 @@ set(CUDA_TOOLKIT_SUBFOLDERS
     # integration
     libcublas
     libcufft
-    libcufile
-    libcuobjclient
+    # libcufile
+    # libcuobjclient
     libcurand
-    libcusolver
+    # libcusolver
     libcusparse
     libnpp
     libnvfatbin
