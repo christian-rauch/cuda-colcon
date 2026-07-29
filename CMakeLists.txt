@@ -46,7 +46,8 @@ ExternalProject_Add(cuda_installer
     CONFIGURE_COMMAND   ""
     # BUILD_COMMAND       ""
     # BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_BINARY_DIR}/cuda_toolkit/
-    BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --extract=${CMAKE_BINARY_DIR}/cuda_toolkit/
+    # BUILD_COMMAND       sh -c "DISPLAY= sh <DOWNLOADED_FILE> --extract=${CMAKE_BINARY_DIR}/cuda_toolkit/"
+    BUILD_COMMAND       ${CMAKE_COMMAND} -E env --unset=DISPLAY sh <DOWNLOADED_FILE> --extract=${CMAKE_BINARY_DIR}/cuda_toolkit/
     INSTALL_COMMAND     ""
     # UPDATE_COMMAND ""
 )
