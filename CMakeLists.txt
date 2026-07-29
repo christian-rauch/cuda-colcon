@@ -45,15 +45,57 @@ ExternalProject_Add(cuda_installer
     # DOWNLOAD_EXTRACT_TIMESTAMP False
     CONFIGURE_COMMAND   ""
     # BUILD_COMMAND       ""
-    BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_BINARY_DIR}/cuda_toolkit/
-    # INSTALL_COMMAND     sh <DOWNLOADED_FILE> --no-man-page --toolkit --toolkitpath=${CMAKE_INSTALL_PREFIX}
+    # BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_BINARY_DIR}/cuda_toolkit/
+    BUILD_COMMAND       sh <DOWNLOADED_FILE> --silent --extract=${CMAKE_BINARY_DIR}/cuda_toolkit/
     INSTALL_COMMAND     ""
     # UPDATE_COMMAND ""
 )
 
-# noop install instruction to silence warning
-# install(CODE "")
-
-install(DIRECTORY ${CMAKE_BINARY_DIR}/cuda_toolkit/
-    DESTINATION ${CMAKE_INSTALL_PREFIX}
+set(CUDA_TOOLKIT_SUBFOLDERS
+    # bin
+    cccl
+    cuda_crt
+    cuda_ctadvisor
+    cuda_cudart
+    cuda_culibos
+    cuda_cuobjdump
+    cuda_cupti
+    cuda_cuxxfilt
+    # cuda_documentation
+    cuda_gdb
+    cuda_nvcc
+    cuda_nvdisasm
+    cuda_nvml_dev
+    cuda_nvprune
+    cuda_nvrtc
+    cuda_nvtx
+    cuda_opencl
+    cuda_profiler_api
+    cuda_sandbox_dev
+    cuda_sanitizer_api
+    cuda_tileiras
+    # integration
+    libcublas
+    libcufft
+    libcufile
+    libcuobjclient
+    libcurand
+    libcusolver
+    libcusparse
+    libnpp
+    libnvfatbin
+    libnvjitlink
+    libnvjpeg
+    libnvptxcompiler
+    libnvvm
+    # nsight_compute
+    # nsight_systems
+    # nvidia_fs
 )
+
+foreach(subfolder IN LISTS CUDA_TOOLKIT_SUBFOLDERS)
+    install(
+        DIRECTORY   "${CMAKE_BINARY_DIR}/cuda_toolkit/${subfolder}/"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}"
+    )
+endforeach()
