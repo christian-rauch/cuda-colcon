@@ -24,17 +24,10 @@ include(ExternalProject)
 file(DOWNLOAD ${CUDA_MD5_URL} ${CMAKE_BINARY_DIR}/md5sum.txt)
 file(STRINGS ${CMAKE_BINARY_DIR}/md5sum.txt CUDA_MD5_LINES)
 foreach(line IN LISTS CUDA_MD5_LINES)
-    message(STATUS "Checking line: ${line}")
-
-    # if(line MATCHES "^([0-9a-fA-F]{32})[ \t]+${CUDA_INSTALLER}$")
-    #     set(CUDA_INSTALLER_MD5 "${CMAKE_MATCH_1}")
-    #     break()
-    # endif()
-
+    # message(STATUS "Checking line: ${line}")
     string(REGEX MATCH "^([^ \t]+)[ \t]+${CUDA_INSTALLER}" MATCHED "${line}")
     if(MATCHED)
         set(CUDA_INSTALLER_MD5 "${CMAKE_MATCH_1}")
-        message(STATUS "Checksum: ${CUDA_INSTALLER_MD5}")
         break()
     endif()
 endforeach()
@@ -44,43 +37,17 @@ endif()
 message(STATUS "CUDA installer MD5: ${CUDA_INSTALLER_MD5}")
 
 # download CUDA installer
-ExternalProject_Add(
-    cuda_installer
-    URL ${CUDA_URL}
-    URL_MD5 ${CUDA_INSTALLER_MD5}
-    # DOWNLOAD_DIR ${CUDA_DOWNLOAD_DIR}
+ExternalProject_Add(cuda_installer
+    URL                 ${CUDA_URL}
+    URL_MD5             ${CUDA_INSTALLER_MD5}
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}
     DOWNLOAD_NO_EXTRACT True
     # DOWNLOAD_EXTRACT_TIMESTAMP False
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-    UPDATE_COMMAND ""
+    CONFIGURE_COMMAND   ""
+    BUILD_COMMAND       ""
+    INSTALL_COMMAND     sh <DOWNLOADED_FILE> --silent --no-man-page --toolkit --toolkitpath=${CMAKE_INSTALL_PREFIX}
+    # UPDATE_COMMAND ""
 )
 
-
-# # Install CUDA toolkit
-# ExternalProject_Add(
-#     cuda_install
-#     DEPENDS cuda_download
-
-#     CONFIGURE_COMMAND ""
-#     BUILD_COMMAND ""
-
-#     INSTALL_COMMAND
-#         sudo bash ${CUDA_DOWNLOAD_DIR}/${CUDA_INSTALLER}
-#         --silent
-#         --toolkit
-#         --toolkitpath=${CUDA_PREFIX}
-
-#     UPDATE_COMMAND ""
-# )
-
-
-# # Create /usr/local/cuda symlink
-# add_custom_target(cuda ALL
-#     DEPENDS cuda_install
-
-#     COMMAND sudo ln -sfn
-#             ${CUDA_PREFIX}
-#             /usr/local/cuda
-# )
+# noop install instruction to silence warning
+install(CODE "")
